@@ -34,7 +34,7 @@ public class CharacterBasicMovement : MonoBehaviour
     //walking
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        transform.position += new Vector3(horizontal * speed * Time.fixedDeltaTime, 0, 0);
     }
 
     //Checking if the character is grounded

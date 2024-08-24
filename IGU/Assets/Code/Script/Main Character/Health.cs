@@ -1,6 +1,8 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class Health : MonoBehaviour
 {
@@ -13,26 +15,39 @@ public class Health : MonoBehaviour
     public Sprite fullHeart;
     public Sprite emptyHeart;
     public SpriteRenderer spriteRenderer;
-
+    public CharacterBasicMovement CharacterBasicMovement;
     private Rigidbody2D rb;
 
     // Knockback force and duration
-    public float knockbackDistance = 2f;
-    public float knockbackDuration = 0.2f;
+    public float knockbackForce;
+    public float knockbackDuration;
+    public float knockbackCounter;
 
     // To track knockback status
     private bool isKnockedBack = false;
+
+    public bool Death = false;
+    public GameObject DeathScreen;
+    public bool Dead = false;
 
     void Start()
     {
         CurrentHealth = MaxHealth;
         UpdateHearts();
         rb = GetComponent<Rigidbody2D>();
+        CharacterBasicMovement = GetComponent<CharacterBasicMovement>();
+        DeathScreen.SetActive(false);
     }
 
     void Update()
     {
         anim.SetBool("Hurt", Hurt);
+        if(Death && Input.GetKey(KeyCode.R))
+        {
+            string currentSceneName = SceneManager.GetActiveScene().name;
+            SceneManager.LoadScene(currentSceneName);
+            Time.timeScale = 1;
+        }
     }
 
     void UpdateHearts()
@@ -57,12 +72,19 @@ public class Health : MonoBehaviour
             Debug.Log("Collision with Enemy detected");
             Hurt = true;
             TakeDamage(1);
-
             // Calculate knockback direction
             Vector2 knockbackDirection = (transform.position - collision.transform.position).normalized;
 
             // Apply knockback
             StartCoroutine(ApplyKnockback(knockbackDirection));
+        }
+        if (collision.gameObject.CompareTag("Ow"))
+        {
+            TakeDamage(4);
+        }
+        if (collision.gameObject.CompareTag("Tp"))
+        {
+            SceneManager.LoadScene("Level 2");
         }
     }
 
@@ -84,28 +106,33 @@ public class Health : MonoBehaviour
         UpdateHearts();
         if (CurrentHealth <= 0)
         {
-            Debug.Log("Ow");
+            Death = true;
+            anim.SetBool("Death", true);
+                DeathScreen.SetActive(true);
+                anim.SetBool("Death", false);
+                Time.timeScale = 0;
+            
         }
+        
     }
 
     private IEnumerator ApplyKnockback(Vector2 direction)
     {
+        CharacterBasicMovement.enabled = false;
         isKnockedBack = true;
+        knockbackCounter = knockbackDuration;
 
-        // Calculate the knockback end position
-        Vector2 startPosition = transform.position;
-        Vector2 endPosition = startPosition + direction * knockbackDistance;
-
-        float elapsed = 0f;
-
-        while (elapsed < knockbackDuration)
+        // Примените силу отскока в направлении direction
+        while (knockbackCounter >= 0)
         {
-            transform.position = Vector2.Lerp(startPosition, endPosition, elapsed / knockbackDuration);
-            elapsed += Time.deltaTime;
-            yield return null;
+            rb.velocity = direction.normalized * knockbackForce;
+            knockbackCounter -= Time.deltaTime;
+            yield return null; // Ждать до следующего кадра
         }
 
-        transform.position = endPosition; // Ensure final position is set
+        // Убедитесь, что скорость сброшена после завершения отскока
+        rb.velocity = Vector2.zero;
+        CharacterBasicMovement.enabled = true;
         isKnockedBack = false;
     }
 }

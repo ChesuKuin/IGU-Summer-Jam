@@ -134,8 +134,9 @@ GameObject:
   - component: {fileID: 1315490382041910941}
   - component: {fileID: 1315490382041910940}
   - component: {fileID: 1315490382041911011}
-  - component: {fileID: 1315490382041911012}
   - component: {fileID: 1315490382041911013}
+  - component: {fileID: 4161927252318175106}
+  - component: {fileID: 9088086400250121785}
   m_Layer: 6
   m_Name: Mage
   m_TagString: Player
@@ -254,22 +255,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &1315490382041911012
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1315490382041910943}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d9cfde6fe9658c49b10bf6391c9ba9b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  anim: {fileID: 1315490382041910940}
-  rb: {fileID: 1315490382041911011}
-  grounded: 1
-  running: 0
 --- !u!60 &1315490382041911013
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -307,6 +292,53 @@ PolygonCollider2D:
       - {x: 0.24543571, y: -0.26485205}
       - {x: 0.24930286, y: 0.33957314}
       - {x: 0.22385406, y: 0.37368464}
+--- !u!114 &4161927252318175106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1315490382041910943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d9cfde6fe9658c49b10bf6391c9ba9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 1315490382041910940}
+  rb: {fileID: 1315490382041911011}
+  grounded: 1
+  running: 0
+--- !u!114 &9088086400250121785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1315490382041910943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 476a9a938a822444da80c2325e214c4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxHealth: 4
+  CurrentHealth: 4
+  Hurt: 0
+  anim: {fileID: 1315490382041910940}
+  hearts:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  fullHeart: {fileID: 21300000, guid: e3de5f2013818714d80cc138fc423d9d, type: 3}
+  emptyHeart: {fileID: 21300000, guid: d37b5259c3ec73b45a1a64bbfa671dc6, type: 3}
+  spriteRenderer: {fileID: 0}
+  CharacterBasicMovement: {fileID: 4161927252318175106}
+  knockbackForce: 4
+  knockbackDuration: 0.6
+  knockbackCounter: 0
+  Death: 0
+  DeathScreen: {fileID: 0}
+  Dead: 0
 --- !u!1 &3403259016087761821
 GameObject:
   m_ObjectHideFlags: 0
