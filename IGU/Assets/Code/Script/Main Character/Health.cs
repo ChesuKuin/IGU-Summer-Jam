@@ -14,10 +14,20 @@ public class Health : MonoBehaviour
     public Sprite emptyHeart;
     public SpriteRenderer spriteRenderer;
 
+    private Rigidbody2D rb;
+
+    // Knockback force and duration
+    public float knockbackDistance = 2f;
+    public float knockbackDuration = 0.2f;
+
+    // To track knockback status
+    private bool isKnockedBack = false;
+
     void Start()
     {
         CurrentHealth = MaxHealth;
         UpdateHearts();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void Update()
@@ -27,7 +37,6 @@ public class Health : MonoBehaviour
 
     void UpdateHearts()
     {
-        // Set all hearts to emptyHeart by default
         for (int i = 0; i < hearts.Length; i++)
         {
             if (i < CurrentHealth)
@@ -43,14 +52,20 @@ public class Health : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Enemy") && !isKnockedBack)
         {
+            Debug.Log("Collision with Enemy detected");
             Hurt = true;
             TakeDamage(1);
+
+            // Calculate knockback direction
+            Vector2 knockbackDirection = (transform.position - collision.transform.position).normalized;
+
+            // Apply knockback
+            StartCoroutine(ApplyKnockback(knockbackDirection));
         }
     }
 
-    //Checking if the character is grounded
     void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
@@ -72,5 +87,25 @@ public class Health : MonoBehaviour
             Debug.Log("Ow");
         }
     }
-}
 
+    private IEnumerator ApplyKnockback(Vector2 direction)
+    {
+        isKnockedBack = true;
+
+        // Calculate the knockback end position
+        Vector2 startPosition = transform.position;
+        Vector2 endPosition = startPosition + direction * knockbackDistance;
+
+        float elapsed = 0f;
+
+        while (elapsed < knockbackDuration)
+        {
+            transform.position = Vector2.Lerp(startPosition, endPosition, elapsed / knockbackDuration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = endPosition; // Ensure final position is set
+        isKnockedBack = false;
+    }
+}
