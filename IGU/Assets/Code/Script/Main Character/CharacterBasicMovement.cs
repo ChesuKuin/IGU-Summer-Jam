@@ -8,7 +8,7 @@ public class CharacterBasicMovement : MonoBehaviour
     [SerializeField] private Animator anim;
     private float horizontal; //horizontal movement
     private float speed = 4f;
-    private float jumpingPower = 8f;
+    private float jumpingPower = 12f;
     private bool isFacingRight = true;
 
     [SerializeField] private Rigidbody2D rb;
