@@ -14,7 +14,8 @@ public class CharacterBasicMovement : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     public bool grounded; //is on ground
     public bool running = false; // not running
-
+    public AudioSource JumpS;
+    public AudioSource Walk;
 
     private void Update()
     {
@@ -22,6 +23,10 @@ public class CharacterBasicMovement : MonoBehaviour
         //Walking
         horizontal = Input.GetAxisRaw("Horizontal");
         anim.SetFloat("Speed", Mathf.Abs(horizontal));
+        if (horizontal == Input.GetAxisRaw("Horizontal"))
+        {
+            Walk.Play();
+        }
 
         //Jumping
         Jump();
@@ -66,7 +71,7 @@ public class CharacterBasicMovement : MonoBehaviour
             if (grounded)
             {
                 rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
-
+                JumpS.Play();
             }
         }
     }

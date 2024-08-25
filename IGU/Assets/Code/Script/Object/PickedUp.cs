@@ -9,6 +9,7 @@ public class PickedUp : MonoBehaviour
     public GameObject Text;
     public GameObject MirrorOnWall;
     public bool pickedUp = false;
+    public GameObject MirrorPickUpG;
 
     void Start()
     {
@@ -23,9 +24,10 @@ public class PickedUp : MonoBehaviour
             PickUp();
     }
 
+
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Player" && pickedUp == false)
+        if (other.CompareTag("Player") && pickedUp == false)
         {
             Text.SetActive(true);
             pickUpAllowed = true;
@@ -38,6 +40,8 @@ public class PickedUp : MonoBehaviour
         Text.SetActive(false);
         pickUpAllowed = false;
         Debug.Log("Not Triggered");
+
+        
     }
 
     private void PickUp()
@@ -46,5 +50,8 @@ public class PickedUp : MonoBehaviour
         pickedUp = true;
         MageMirror.SetActive(true);
         Debug.Log("Picked");
+        Destroy(MirrorPickUpG);
     }
+
+   
 }

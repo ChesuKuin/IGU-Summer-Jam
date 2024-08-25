@@ -30,6 +30,12 @@ public class Health : MonoBehaviour
     public GameObject DeathScreen;
     public bool Dead = false;
 
+    public AudioSource HurtS;
+    public AudioSource DeadS;
+    public AudioSource TpS;
+
+    public string SceneName;
+
     void Start()
     {
         CurrentHealth = MaxHealth;
@@ -77,6 +83,8 @@ public class Health : MonoBehaviour
 
             // Apply knockback
             StartCoroutine(ApplyKnockback(knockbackDirection));
+
+            HurtS.Play();
         }
         if (collision.gameObject.CompareTag("Ow"))
         {
@@ -84,7 +92,8 @@ public class Health : MonoBehaviour
         }
         if (collision.gameObject.CompareTag("Tp"))
         {
-            SceneManager.LoadScene("Level 2");
+            TpS.Play();
+            SceneManager.LoadScene(SceneName);
         }
     }
 
@@ -106,6 +115,8 @@ public class Health : MonoBehaviour
         UpdateHearts();
         if (CurrentHealth <= 0)
         {
+
+            DeadS.Play();
             Death = true;
             anim.SetBool("Death", true);
                 DeathScreen.SetActive(true);
