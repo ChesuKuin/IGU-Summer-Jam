@@ -10,9 +10,11 @@ public class CharacterBasicMovement : MonoBehaviour
     private float speed = 4f;
     private float jumpingPower = 12f;
     private bool isFacingRight = true;
-
+    public LayerMask ignoreLayer;
+    public Vector3 boxSize;
+    public float maxDistance;
     [SerializeField] private Rigidbody2D rb;
-    public bool grounded; //is on ground
+     //is on ground
     public bool running = false; // not running
 
 
@@ -24,9 +26,10 @@ public class CharacterBasicMovement : MonoBehaviour
         anim.SetFloat("Speed", Mathf.Abs(horizontal));
 
         //Jumping
-        Jump();
+        
 
         //Flipping the character
+        Jump();
         Flip();
 
     }
@@ -35,25 +38,10 @@ public class CharacterBasicMovement : MonoBehaviour
     private void FixedUpdate()
     {
         transform.position += new Vector3(horizontal * speed * Time.fixedDeltaTime, 0, 0);
+        
     }
 
     //Checking if the character is grounded
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            grounded = true;
-        }
-    }
-
-    //Checking if the character is grounded
-    void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            grounded = false;
-        }
-    }
 
 
 
@@ -61,13 +49,10 @@ public class CharacterBasicMovement : MonoBehaviour
     //Jumping
     private void Jump()
     {
-        if (Input.GetButtonDown("Jump"))
+         if (Input.GetButtonDown("Jump") && Groundcheck())
         {
-            if (grounded)
-            {
-                rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
-
-            }
+        
+            rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
         }
     }
 
@@ -82,5 +67,19 @@ public class CharacterBasicMovement : MonoBehaviour
             transform.localScale = localScale;
         }
 
+    }
+     private bool Groundcheck()
+    {
+        if (Physics2D.BoxCast(transform.position, boxSize, 0f, Vector2.down, maxDistance, ~ignoreLayer)) 
+        {   
+            return true;
+        }
+        else { return false;}
+    }
+    private void OnDrawGizmos()
+    {
+    Gizmos.color = Color.red;
+    // Используйте transform.position вместо TransformPosition
+    Gizmos.DrawCube(transform.position - (Vector3)transform.up * maxDistance, boxSize);
     }
 }

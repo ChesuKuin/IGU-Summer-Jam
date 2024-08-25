@@ -25,7 +25,9 @@ public class Health : MonoBehaviour
 
     // To track knockback status
     private bool isKnockedBack = false;
-
+    public bool imune =false;
+    public float imuneTime;
+    public float imuneTimeCounter;
     public bool Death = false;
     public GameObject DeathScreen;
     public bool Dead = false;
@@ -40,14 +42,16 @@ public class Health : MonoBehaviour
     }
 
     void Update()
-    {
+    {   imuneTimeCounter -= Time.deltaTime;
         anim.SetBool("Hurt", Hurt);
         if(Death && Input.GetKey(KeyCode.R))
         {
             string currentSceneName = SceneManager.GetActiveScene().name;
             SceneManager.LoadScene(currentSceneName);
             Time.timeScale = 1;
-        }
+        } 
+        
+        if (imuneTimeCounter <= 0)  { imune = false;}
     }
 
     void UpdateHearts()
@@ -67,11 +71,13 @@ public class Health : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy") && !isKnockedBack)
+        if (collision.gameObject.CompareTag("Enemy") && !isKnockedBack && !imune)
         {
             Debug.Log("Collision with Enemy detected");
             Hurt = true;
             TakeDamage(1);
+            imune = true;
+            imuneTimeCounter = imuneTime;
             // Calculate knockback direction
             Vector2 knockbackDirection = (transform.position - collision.transform.position).normalized;
 

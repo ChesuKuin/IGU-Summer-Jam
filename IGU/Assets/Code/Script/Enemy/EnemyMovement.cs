@@ -12,7 +12,8 @@ public class EnemyMovement : MonoBehaviour
     public bool attack = false;
     private bool grounded;
     private bool isFacingRight = false;
-
+    RaycastHit2D hitPlayer;
+    public LayerMask playerLayer;
     void Start()
     {
     }
@@ -26,7 +27,15 @@ public class EnemyMovement : MonoBehaviour
             Flip();
             transform.position += Vector3.right * direction * speed * Time.deltaTime;
         }
+        Vector2 hitPlayerOrigin = (Vector2)transform.position + Vector2.right * direction * 0.1f;
+        hitPlayer = Physics2D.Raycast(hitPlayerOrigin, Vector2.right * direction, 1f, playerLayer);
+        if (hitPlayer.collider != null && hitPlayer.collider.tag == "Player")
+        {
+        attack = true;
+        }
+        else{ attack=false;}
     }
+
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.otherCollider == GroundCheck && collision.gameObject.CompareTag("Ground"))
@@ -34,10 +43,6 @@ public class EnemyMovement : MonoBehaviour
             grounded = true;
         }
 
-        if (collision.otherCollider == PlayerDetect && collision.gameObject.CompareTag("Player"))
-        {
-            attack = true;
-        }
     }
     void OnCollisionExit2D(Collision2D collision)
     {
@@ -46,10 +51,7 @@ public class EnemyMovement : MonoBehaviour
             grounded = false;
         }
 
-        if (collision.otherCollider == PlayerDetect && collision.gameObject.CompareTag("Player"))
-        {
-            attack = false;
-        }
+        
     }
     private void OnDrawGizmos()
     {
@@ -65,6 +67,9 @@ public class EnemyMovement : MonoBehaviour
             Gizmos.color = Color.red;
             Gizmos.DrawWireCube(PlayerDetect.bounds.center, PlayerDetect.bounds.size);
         }
+        Gizmos.color = Color.blue;
+Vector2 hitPlayerOrigin = (Vector2)transform.position + Vector2.right * direction * 0.1f;
+Gizmos.DrawLine(hitPlayerOrigin, hitPlayerOrigin + Vector2.right * direction * 1f);
     }
     private void Flip()
     {
