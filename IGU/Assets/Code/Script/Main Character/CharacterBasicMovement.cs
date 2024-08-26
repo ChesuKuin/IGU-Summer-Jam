@@ -15,7 +15,6 @@ public class CharacterBasicMovement : MonoBehaviour
     public bool grounded; //is on ground
     public bool running = false; // not running
     public AudioSource JumpS;
-    public AudioSource Walk;
 
     private void Update()
     {
@@ -23,10 +22,6 @@ public class CharacterBasicMovement : MonoBehaviour
         //Walking
         horizontal = Input.GetAxisRaw("Horizontal");
         anim.SetFloat("Speed", Mathf.Abs(horizontal));
-        if (horizontal == Input.GetAxisRaw("Horizontal"))
-        {
-            Walk.Play();
-        }
 
         //Jumping
         Jump();

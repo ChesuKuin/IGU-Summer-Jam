@@ -36,6 +36,8 @@ public class Health : MonoBehaviour
 
     public string SceneName;
 
+    public bool Hitframe = false;
+
     void Start()
     {
         CurrentHealth = MaxHealth;
@@ -75,20 +77,54 @@ public class Health : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy") && !isKnockedBack)
         {
-            Debug.Log("Collision with Enemy detected");
-            Hurt = true;
-            TakeDamage(1);
-            // Calculate knockback direction
-            Vector2 knockbackDirection = (transform.position - collision.transform.position).normalized;
+            if (!Hitframe)
+            {
+                Debug.Log("Collision with Enemy detected");
+                Hurt = true;
+                TakeDamage(1);
+                // Calculate knockback direction
+                Vector2 knockbackDirection = (transform.position - collision.transform.position).normalized;
 
-            // Apply knockback
-            StartCoroutine(ApplyKnockback(knockbackDirection));
+                // Apply knockback
+                StartCoroutine(ApplyKnockback(knockbackDirection));
 
-            HurtS.Play();
+                HurtS.Play();
+            }
         }
         if (collision.gameObject.CompareTag("Ow"))
         {
             TakeDamage(4);
+        }
+        if (collision.gameObject.CompareTag("Beam"))
+        {
+            if (!Hitframe)
+            {
+                Debug.Log("Collision with Enemy detected");
+                Hurt = true;
+                TakeDamage(1);
+                // Calculate knockback direction
+                Vector2 knockbackDirection = (transform.position - collision.transform.position).normalized;
+
+                // Apply knockback
+                StartCoroutine(ApplyKnockback(knockbackDirection));
+
+                HurtS.Play();
+            }
+        }
+        if (collision.gameObject.CompareTag("Insta"))
+        {
+            if (!Hitframe)
+            {
+                Debug.Log("Collision with Enemy detected");
+                TakeDamage(3);
+                // Calculate knockback direction
+                Vector2 knockbackDirection = (transform.position - collision.transform.position).normalized;
+
+                // Apply knockback
+                StartCoroutine(ApplyKnockback(knockbackDirection));
+
+                HurtS.Play();
+            }
         }
         if (collision.gameObject.CompareTag("Tp"))
         {
@@ -145,5 +181,12 @@ public class Health : MonoBehaviour
         rb.velocity = Vector2.zero;
         CharacterBasicMovement.enabled = true;
         isKnockedBack = false;
+    }
+    private IEnumerator HitFrameWait()
+    {
+        Hitframe = true;
+        yield return new WaitForSeconds(1f);
+        Hitframe = false;
+
     }
 }

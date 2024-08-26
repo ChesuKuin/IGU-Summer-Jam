@@ -12,9 +12,21 @@ public class EnemyMovement : MonoBehaviour
     public bool attack = false;
     private bool grounded;
     private bool isFacingRight = false;
+    public GameObject Exit;
+
+    public int MaxHealth = 2;
+    public int CurrentHealth;
+
+    public AudioSource DeathMonster;
+
+    public GameObject Monster;
+
+    public bool CanBeAttacked = true;
 
     void Start()
     {
+        Exit.SetActive(true);
+        CurrentHealth = MaxHealth;
     }
 
     // Update is called once per frame
@@ -51,6 +63,36 @@ public class EnemyMovement : MonoBehaviour
             attack = false;
         }
     }
+    void OnTriggerEnter2D(Collider2D other)
+    {
+
+        if (other.CompareTag("Damage"))
+        {
+            if (CanBeAttacked)
+            {
+                anim.SetBool("Hit", true);
+
+                TakeDamage(1);
+                StartCoroutine(WaitUntilDamage());
+            }
+            
+        }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        CurrentHealth -= damage;
+        if (CurrentHealth < 0)
+        {
+            CurrentHealth = 0;
+        }
+        if (CurrentHealth <= 0)
+        {
+            Destroy(Monster);
+            Exit.SetActive(false);
+        }
+
+    }
     private void OnDrawGizmos()
     {
         // Visualize GroundCheck and PlayerDetect colliders in the editor
@@ -77,5 +119,14 @@ public class EnemyMovement : MonoBehaviour
             transform.localScale = localScale;
         }
 
+    }
+    private IEnumerator WaitUntilDamage()
+    {
+        CanBeAttacked = false;
+        yield return new WaitForSeconds(0.2f);
+
+        anim.SetBool("Hit", false);
+        yield return new WaitForSeconds(1f);
+        CanBeAttacked = true;
     }
 }
