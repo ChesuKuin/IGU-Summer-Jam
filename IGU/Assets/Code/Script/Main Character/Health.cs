@@ -29,6 +29,9 @@ public class Health : MonoBehaviour
     public bool Death = false;
     public GameObject DeathScreen;
     public bool Dead = false;
+    public GameObject Jump;
+
+    public GameObject Tip1;
 
     public AudioSource HurtS;
     public AudioSource DeadS;
@@ -38,6 +41,8 @@ public class Health : MonoBehaviour
 
     public bool Hitframe = false;
 
+    public bool Died = false;
+
     void Start()
     {
         CurrentHealth = MaxHealth;
@@ -45,12 +50,13 @@ public class Health : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         CharacterBasicMovement = GetComponent<CharacterBasicMovement>();
         DeathScreen.SetActive(false);
+        Tip1.SetActive(false);
     }
 
     void Update()
     {
         anim.SetBool("Hurt", Hurt);
-        if(Death && Input.GetKey(KeyCode.R))
+        if (Death && Input.GetKey(KeyCode.J))
         {
             string currentSceneName = SceneManager.GetActiveScene().name;
             SceneManager.LoadScene(currentSceneName);
@@ -82,10 +88,8 @@ public class Health : MonoBehaviour
                 Debug.Log("Collision with Enemy detected");
                 Hurt = true;
                 TakeDamage(1);
-                // Calculate knockback direction
                 Vector2 knockbackDirection = (transform.position - collision.transform.position).normalized;
 
-                // Apply knockback
                 StartCoroutine(ApplyKnockback(knockbackDirection));
 
                 HurtS.Play();
@@ -94,6 +98,7 @@ public class Health : MonoBehaviour
         if (collision.gameObject.CompareTag("Ow"))
         {
             TakeDamage(4);
+            Tip1.SetActive(true);
         }
         if (collision.gameObject.CompareTag("Beam"))
         {
@@ -102,10 +107,8 @@ public class Health : MonoBehaviour
                 Debug.Log("Collision with Enemy detected");
                 Hurt = true;
                 TakeDamage(1);
-                // Calculate knockback direction
                 Vector2 knockbackDirection = (transform.position - collision.transform.position).normalized;
 
-                // Apply knockback
                 StartCoroutine(ApplyKnockback(knockbackDirection));
 
                 HurtS.Play();
@@ -117,10 +120,8 @@ public class Health : MonoBehaviour
             {
                 Debug.Log("Collision with Enemy detected");
                 TakeDamage(3);
-                // Calculate knockback direction
                 Vector2 knockbackDirection = (transform.position - collision.transform.position).normalized;
 
-                // Apply knockback
                 StartCoroutine(ApplyKnockback(knockbackDirection));
 
                 HurtS.Play();
@@ -155,12 +156,13 @@ public class Health : MonoBehaviour
             DeadS.Play();
             Death = true;
             anim.SetBool("Death", true);
-                DeathScreen.SetActive(true);
-                anim.SetBool("Death", false);
-                Time.timeScale = 0;
-            
+            DeathScreen.SetActive(true);
+            anim.SetBool("Death", false);
+            Time.timeScale = 0;
+            Died = true;
+
         }
-        
+
     }
 
     private IEnumerator ApplyKnockback(Vector2 direction)
@@ -169,15 +171,13 @@ public class Health : MonoBehaviour
         isKnockedBack = true;
         knockbackCounter = knockbackDuration;
 
-        // Примените силу отскока в направлении direction
         while (knockbackCounter >= 0)
         {
             rb.velocity = direction.normalized * knockbackForce;
             knockbackCounter -= Time.deltaTime;
-            yield return null; // Ждать до следующего кадра
+            yield return null; 
         }
 
-        // Убедитесь, что скорость сброшена после завершения отскока
         rb.velocity = Vector2.zero;
         CharacterBasicMovement.enabled = true;
         isKnockedBack = false;

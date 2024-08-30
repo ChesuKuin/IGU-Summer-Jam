@@ -19,7 +19,7 @@ public class PowMirror : MonoBehaviour
 
     private void Changling()
     {
-        if (MageMirror.activeSelf == true && Input.GetKey(KeyCode.T))
+        if (MageMirror.activeSelf == true && Input.GetKey(KeyCode.K))
         {
             anim.SetInteger("Pow", 1);
 

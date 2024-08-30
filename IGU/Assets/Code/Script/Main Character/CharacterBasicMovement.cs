@@ -18,16 +18,16 @@ public class CharacterBasicMovement : MonoBehaviour
 
     private void Update()
     {
+            //Walking
+            horizontal = Input.GetAxisRaw("Horizontal");
+            anim.SetFloat("Speed", Mathf.Abs(horizontal));
 
-        //Walking
-        horizontal = Input.GetAxisRaw("Horizontal");
-        anim.SetFloat("Speed", Mathf.Abs(horizontal));
+            //Jumping
+            Jump();
 
-        //Jumping
-        Jump();
-
-        //Flipping the character
-        Flip();
+            //Flipping the character
+            Flip();
+       
 
     }
 

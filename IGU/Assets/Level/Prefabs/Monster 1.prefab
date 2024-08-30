@@ -176,7 +176,7 @@ MonoBehaviour:
   speed: 0.5
   direction: -1
   attack: 0
-  Exit: {fileID: 5304934616925265281, guid: d53658a24a6ae6c41bfb812f96fe455e, type: 3}
+  Exit: {fileID: 3150813911649692208, guid: aa9d5ceefce179f4681ee98431674dc2, type: 3}
   MaxHealth: 2
   CurrentHealth: 0
   DeathMonster: {fileID: 363082573186095176, guid: a2a74703ef35c3e4a8d432bf56ee96af, type: 3}

@@ -24,7 +24,7 @@ public class DamagePow : MonoBehaviour
 
     private void Damage()
     {
-        if (MageMirror.activeSelf == true && Input.GetKey(KeyCode.M))
+        if (MageMirror.activeSelf == true && Input.GetKey(KeyCode.L))
         {
             anim.SetInteger("Damage", 2);
             StartCoroutine(ExecutePowDamage());

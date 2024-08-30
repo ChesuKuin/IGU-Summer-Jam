@@ -169,9 +169,9 @@ GameObject:
   - component: {fileID: 1315490382041910941}
   - component: {fileID: 1315490382041910940}
   - component: {fileID: 1315490382041911011}
-  - component: {fileID: 1315490382041911013}
   - component: {fileID: 4161927252318175106}
   - component: {fileID: 9088086400250121785}
+  - component: {fileID: 7890878563931586241}
   m_Layer: 6
   m_Name: Mage
   m_TagString: Player
@@ -290,43 +290,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!60 &1315490382041911013
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1315490382041910943}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -0.29795742, y: 0.3814199}
-      - {x: -0.31127644, y: -0.43746924}
-      - {x: -0.24605179, y: -0.48790717}
-      - {x: -0.24028301, y: -0.49487615}
-      - {x: -0.23112679, y: -0.5}
-      - {x: 0.12470436, y: -0.5003431}
-      - {x: 0.13072872, y: -0.49883962}
-      - {x: 0.13508797, y: -0.4956422}
-      - {x: 0.22285652, y: -0.44579792}
-      - {x: 0.24543571, y: -0.26485205}
-      - {x: 0.24930286, y: 0.33957314}
-      - {x: 0.22385406, y: 0.37368464}
 --- !u!114 &4161927252318175106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -375,10 +338,29 @@ MonoBehaviour:
   Death: 0
   DeathScreen: {fileID: 0}
   Dead: 0
+  Jump: {fileID: 0}
+  Tip1: {fileID: 0}
   HurtS: {fileID: 0}
   DeadS: {fileID: 0}
   TpS: {fileID: 0}
   SceneName: 
+  Hitframe: 0
+--- !u!70 &7890878563931586241
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1315490382041910943}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.067539215, y: -0.07625353}
+  m_Size: {x: 0.5773382, y: 0.84749293}
+  m_Direction: 0
 --- !u!1 &3403259016087761821
 GameObject:
   m_ObjectHideFlags: 0
@@ -819,6 +801,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   badGuyPrefab: {fileID: 190881859846512142, guid: e8804aac6fb864c46a2c501f7215d01d, type: 3}
   goodGuy: {fileID: 0}
+  Exit1: {fileID: 0}
 --- !u!4 &8740738293351934181 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7878350319992209165, guid: 9abc8796cae880e4dbb6e1e196b65f59, type: 3}

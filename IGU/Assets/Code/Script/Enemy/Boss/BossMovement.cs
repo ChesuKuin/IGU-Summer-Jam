@@ -35,13 +35,13 @@ public class BossMovement : MonoBehaviour
         {
             MoveBoss();
         }
-        if (DoneB && Input.GetKey(KeyCode.R))
+        if (DoneB && Input.GetKey(KeyCode.J))
         {
             string currentSceneName = SceneManager.GetActiveScene().name;
             SceneManager.LoadScene(currentSceneName);
             Time.timeScale = 1;
         }
-        if (SecretB && Input.GetKey(KeyCode.R))
+        if (SecretB && Input.GetKey(KeyCode.J))
         {
             SceneManager.LoadScene("Level 1");
             Time.timeScale = 1;
